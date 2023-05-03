@@ -39,7 +39,7 @@ The data contains 36000+ instances of EV Charging stations which includes
 
 <!-- List of work packages ordered sequentially, each pointing to an issue with more details. -->
 
-1. Example Issue [#1][i1]
+1. Clean & Transform data [#1][i1]
 2. ...
 
-[i1]: https://github.com/jvalue/2023-amse-template/issues/1
+[i1]: https://github.com/mapleprice/2023-AMSE/issues/1

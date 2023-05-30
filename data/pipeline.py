@@ -5,7 +5,11 @@ def get_current_month():
     return datetime.datetime.now().month
 
 def extract_chargers_data(ev_chargers_src):
-    return pd.read_csv(ev_chargers_src, sep = ';')
+    df = pd.read_csv(ev_chargers_src, sep = ';')
+    df[['latitude', 'longitude']] = df['koordinaten'].str.split(', ', expand=True)
+    df = df.astype({"latitude": 'float64', "longitude": 'float64'})
+    print(df.dtypes)
+    return df
 
 def extract_ev_data(ev_src):
     # data is on FZ 28.9 tab

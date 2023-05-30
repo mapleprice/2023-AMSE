@@ -1,12 +1,24 @@
 import pandas as pd
 import datetime
 
+def extract_chargers_data(ev_chargers_src):
+    return pd.read_csv(ev_chargers_src, sep = ';')
+
+def extract_ev_data(ev_src):
+    # data is on FZ 28.9 tab
+    xls = pd.read_excel( ev_src, "FZ 28.9" )
+    # to-date data is on row 30 to 46 and col 1 onwards
+    return xls.iloc[30:47, 1:]
+
 def get_current_month():
     return datetime.datetime.now().month
 
 def add_metadata(df, metadata):
     for i in range(len(metadata)):
         df.columns.values[i] = metadata[i]
+        
+def load(df, table_name, db_name):
+    df.to_sql(table_name, db_name, if_exists= 'replace', index = False)
     
 
 ev_chargers_src = 'https://opendata.rhein-kreis-neuss.de/api/v2/catalog/datasets/rhein-kreis-neuss-ladesaulen-in-deutschland/exports/csv'
@@ -14,13 +26,10 @@ registered_cars_src = f'https://www.kba.de/SharedDocs/Downloads/DE/Statistik/Fah
 
 if __name__ == '__main__':
     
-    df = pd.read_csv( ev_chargers_src, sep = ';')
-    df.to_sql('ev_chargers_locations', 'sqlite:///data.sqlite', if_exists = 'replace', index=False)
+    df = extract_chargers_data(ev_chargers_src)
+    load(df, 'ev_chargers_locations', 'sqlite:///data.sqlite')
 
-    # data is on FZ 28.9 tab
-    xls = pd.read_excel( registered_cars_src, "FZ 28.9" )
-    # to-date data is on row 30 to 46 and col 1 onwards
-    df = xls.iloc[30:47, 1:]
+    df = extract_ev_data(registered_cars_src)
     metadata = [
             'state',
             'total_vehicle',
@@ -40,9 +49,8 @@ if __name__ == '__main__':
             'gas_vehicle',
             'hydrogen_vehicle'
             ]
-    # add metadata
+
     add_metadata(df,metadata)
-    #save to database
-    df.to_sql('state_registered_vehicles', 'sqlite:///data.sqlite', if_exists = 'replace', index=False)
+    load(df, 'state_registered_vehicles', 'sqlite:///data.sqlite')
 
     

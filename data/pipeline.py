@@ -1,6 +1,9 @@
 import pandas as pd
 import datetime
 
+def get_current_month():
+    return datetime.datetime.now().month
+
 def extract_chargers_data(ev_chargers_src):
     return pd.read_csv(ev_chargers_src, sep = ';')
 
@@ -9,9 +12,6 @@ def extract_ev_data(ev_src):
     xls = pd.read_excel( ev_src, "FZ 28.9" )
     # to-date data is on row 30 to 46 and col 1 onwards
     return xls.iloc[30:47, 1:]
-
-def get_current_month():
-    return datetime.datetime.now().month
 
 def add_metadata(df, metadata):
     for i in range(len(metadata)):

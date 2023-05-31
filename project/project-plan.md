@@ -40,6 +40,7 @@ The data contains 36000+ instances of EV Charging stations which includes
 <!-- List of work packages ordered sequentially, each pointing to an issue with more details. -->
 
 1. Clean & Transform data [#1][i1]
-2. ...
+2. Writing Automated Tests [#2][i1]
+3. Deploy the application [#3][i1]
 
 [i1]: https://github.com/mapleprice/2023-AMSE/issues/1

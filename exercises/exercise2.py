@@ -40,21 +40,16 @@ class TrainstopsTransformer(Block):
         d = df
         #removing invalid verkehr
         valid_verkehr = ['FV','RV','nur DPN']
-        print(d.shape)
         d = d[d["Verkehr"].isin(valid_verkehr)]
-        print(d.shape)    
         
         #removing invalid laenge & breite
         d = d[((d['Laenge'] >= -90) & (d['Laenge'] <= 90))]
         d = d[((d['Breite'] >= -90) & (d['Breite'] <= 90))]
-        print(d.shape)
         #removing invalid IFOPT
         pattern = r"^[a-zA-Z]{2}:\d+:\d+(:\d+)?$"
         d = d[d['IFOPT'].str.contains(pattern)]
-        print(d.shape)
         #drop all rows with empty columns
         d = d.dropna(inplace=False)
-        print(d.shape)
         return d
     
 class TrainstopsDBLoader(Block):

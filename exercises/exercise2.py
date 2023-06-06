@@ -58,7 +58,6 @@ class TrainstopsDBLoader(Block):
         self.db = db
     
     def execute(self, df):
-        sqlalchemy.create_engine(self.db)
         dtype={
             'EVA_NR' : sqlalchemy.INTEGER(),
             'DS100' : sqlalchemy.NVARCHAR(length=255),

@@ -28,4 +28,5 @@ jobs:
     # Run exercise feedback
     - name: Tests
       run:
+        ls
         ./project/tests.sh

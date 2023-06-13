@@ -11,10 +11,10 @@ echo "===================================="
 echo "Running Unit Tests..."
 echo "===================================="
 
-python3 unittest.py
+python3 unittests.py
 
 echo "===================================="
 echo "Running System Test..."
 echo "===================================="
 
-python3 systemtest.py
+python3 systemtests.py

@@ -3,3 +3,4 @@ exercises/airports.sqlite
 test_load.sqlite
 */__pycache__/*
 exercises/trainstops.sqlite
+project/data/__pycache__/*

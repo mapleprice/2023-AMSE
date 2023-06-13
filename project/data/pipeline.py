@@ -10,9 +10,21 @@ def extract_chargers_data(ev_chargers_src):
     df = df.astype({"latitude": 'float64', "longitude": 'float64'})
     return df
 
-def extract_ev_data(ev_src):
+def extract_ev_data():
     # data is on FZ 28.9 tab
-    xls = pd.read_excel( ev_src, "FZ 28.9" )
+    xls = None
+    extracted = False
+    latest_data_month = get_current_month() - 1 if get_current_month() - 1 > 0 else 12
+    while not extracted and latest_data_month > 0:
+        print("Trying to get data of month", latest_data_month)
+        ev_src = f'https://www.kba.de/SharedDocs/Downloads/DE/Statistik/Fahrzeuge/FZ28/fz28_2023_0{latest_data_month}.xlsx?__blob=publicationFile&v=6'
+        try:
+            xls = pd.read_excel( ev_src, "FZ 28.9" )
+            extracted = True
+        except Exception:
+            latest_data_month -= 1
+    if not extracted:
+        raise Exception("No data available")
     # to-date data is on row 30 to 46 and col 1 onwards
     return xls.iloc[30:47, 1:]
 
@@ -25,24 +37,14 @@ def load(df, table_name, db_name):
     
 
 ev_chargers_src = 'https://opendata.rhein-kreis-neuss.de/api/v2/catalog/datasets/rhein-kreis-neuss-ladesaulen-in-deutschland/exports/csv'
-registered_cars_src = f'https://www.kba.de/SharedDocs/Downloads/DE/Statistik/Fahrzeuge/FZ28/fz28_2023_0{get_current_month() - 1}.xlsx?__blob=publicationFile&v=6'
 
 if __name__ == '__main__':
-    
+    ev_chargers_src = 'https://opendata.rhein-kreis-neuss.de/api/v2/catalog/datasets/rhein-kreis-neuss-ladesaulen-in-deutschland/exports/csv'
     df = extract_chargers_data(ev_chargers_src)
     load(df, 'ev_chargers_locations', 'sqlite:///data.sqlite')
 
     # Extracting EV data
-    extracted = False
-    latest_data_month = get_current_month() - 1 if get_current_month() - 1 > 0 else 12
-    while not extracted and latest_data_month > 0:
-        print("Trying to get data of month", latest_data_month)
-        registered_cars_src = f'https://www.kba.de/SharedDocs/Downloads/DE/Statistik/Fahrzeuge/FZ28/fz28_2023_0{latest_data_month}.xlsx?__blob=publicationFile&v=6'
-        try:
-            df = extract_ev_data(registered_cars_src)
-            extracted = True
-        except Exception:
-            latest_data_month -= 1
+    df = extract_ev_data()
         
     metadata = [
             'state',

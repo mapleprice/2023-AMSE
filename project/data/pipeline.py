@@ -8,7 +8,6 @@ def extract_chargers_data(ev_chargers_src):
     df = pd.read_csv(ev_chargers_src, sep = ';')
     df[['latitude', 'longitude']] = df['koordinaten'].str.split(', ', expand=True)
     df = df.astype({"latitude": 'float64', "longitude": 'float64'})
-    print(df.dtypes)
     return df
 
 def extract_ev_data(ev_src):
@@ -33,7 +32,18 @@ if __name__ == '__main__':
     df = extract_chargers_data(ev_chargers_src)
     load(df, 'ev_chargers_locations', 'sqlite:///data.sqlite')
 
-    df = extract_ev_data(registered_cars_src)
+    # Extracting EV data
+    extracted = False
+    latest_data_month = get_current_month() - 1
+    while not extracted:
+        print("Trying to get data of month", latest_data_month)
+        registered_cars_src = f'https://www.kba.de/SharedDocs/Downloads/DE/Statistik/Fahrzeuge/FZ28/fz28_2023_0{latest_data_month}.xlsx?__blob=publicationFile&v=6'
+        try:
+            df = extract_ev_data(registered_cars_src)
+            extracted = True
+        except Exception:
+            latest_data_month -= 1
+        
     metadata = [
             'state',
             'total_vehicle',

@@ -21,7 +21,10 @@ def extract_ev_data():
         try:
             xls = pd.read_excel( ev_src, "FZ 28.9" )
             extracted = True
-        except Exception:
+        except Exception as e:
+            print('--------------EXCEPTION---------------')
+            print(e)
+            print('--------------------------------------')
             latest_data_month -= 1
     if not extracted:
         raise Exception("No data available")

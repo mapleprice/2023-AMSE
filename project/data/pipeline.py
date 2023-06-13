@@ -34,8 +34,8 @@ if __name__ == '__main__':
 
     # Extracting EV data
     extracted = False
-    latest_data_month = get_current_month() - 1
-    while not extracted:
+    latest_data_month = get_current_month() - 1 if get_current_month() - 1 > 0 else 12
+    while not extracted and latest_data_month > 0:
         print("Trying to get data of month", latest_data_month)
         registered_cars_src = f'https://www.kba.de/SharedDocs/Downloads/DE/Statistik/Fahrzeuge/FZ28/fz28_2023_0{latest_data_month}.xlsx?__blob=publicationFile&v=6'
         try:

@@ -35,14 +35,29 @@ The data contains 36000+ instances of EV Charging stations which includes
 - Latitude
 - Longitude
 
-## Work Packages
+### Datasource3: Kreise - Germany 
+* Metadata URL: https://public.opendatasoft.com/explore/dataset/georef-germany-kreis/
+* Data URL: https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/georef-germany-kreis/exports/csv?lang=en&timezone=Europe%2FBerlin&use_labels=true&delimiter=%3B
+Data Type: CSV
 
+This dataset is part of the Geographical repository maintained by Opendatasoft.
+
+Processors and tools are using this data. They have been extracted from the Verwaltungsgebiete 1:250 000 (VG250) published by BKG, and contain data from 2020.
+
+This dataset covers Germany at the Kreise (districts) level.
+
+## Work Packages
 <!-- List of work packages ordered sequentially, each pointing to an issue with more details. -->
 
 1. Clean & Transform data [#1][i1]
 2. Writing Automated Tests [#2][i2]
-3. Deploy the application [#3][i3]
+3. Deploy the Tests [#3][i3]
+3. Exploratory Analysis [#4][i4]
+4. Write Final Report [#5][i5]
+
 
 [i1]: https://github.com/mapleprice/2023-AMSE/issues/1
 [i2]: https://github.com/mapleprice/2023-AMSE/issues/2
 [i3]: https://github.com/mapleprice/2023-AMSE/issues/3
+[i4]: https://github.com/mapleprice/2023-AMSE/issues/4
+[i5]: https://github.com/mapleprice/2023-AMSE/issues/5

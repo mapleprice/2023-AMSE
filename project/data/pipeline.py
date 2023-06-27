@@ -1,5 +1,6 @@
 import pandas as pd
 import datetime
+from googletrans import Translator
 
 def get_current_month():
     return datetime.datetime.now().month
@@ -31,6 +32,11 @@ def extract_ev_data():
     # to-date data is on row 30 to 46 and col 1 onwards
     return xls.iloc[30:47, 1:]
 
+def extract_kreis_data(kreis_src):
+    df = pd.read_csv(kreis_src, sep = ';')
+    df = df.loc[:, ["Land name", "Kreis name"]]
+    return df
+
 def add_metadata(df, metadata):
     for i in range(len(metadata)):
         df.columns.values[i] = metadata[i]
@@ -39,12 +45,14 @@ def load(df, table_name, db_name):
     df.to_sql(table_name, db_name, if_exists= 'replace', index = False)
     
 
-ev_chargers_src = 'https://opendata.rhein-kreis-neuss.de/api/v2/catalog/datasets/rhein-kreis-neuss-ladesaulen-in-deutschland/exports/csv'
-
 if __name__ == '__main__':
     ev_chargers_src = 'https://opendata.rhein-kreis-neuss.de/api/v2/catalog/datasets/rhein-kreis-neuss-ladesaulen-in-deutschland/exports/csv'
+    land_kries_src = 'https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/georef-germany-kreis/exports/csv?lang=en&timezone=Europe%2FBerlin&use_labels=true&delimiter=%3B'
+    
     df = extract_chargers_data(ev_chargers_src)
-    load(df, 'ev_chargers_locations', 'sqlite:///data.sqlite')
+    lk_df = extract_kreis_data(land_kries_src)
+    load(lk_df, 'land_landkreis', 'sqlite:///data.sqlite')
+    load(df, 'ev_chargers_locations', 'sqlite:///data.sqlite')    
 
     # Extracting EV data
     df = extract_ev_data()

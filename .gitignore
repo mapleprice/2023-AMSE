@@ -4,3 +4,9 @@ test_load.sqlite
 exercises/trainstops.sqlite
 project/data/__pycache__/*
 project/data/data.sqlite
+.vscode/
+exercises/cars.sqlite
+exercises/data.csv
+exercises/README.pdf
+exercises/temperatures.sqlite
+project/data/r.txt
